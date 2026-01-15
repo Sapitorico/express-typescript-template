@@ -1,0 +1,11 @@
+# vscode
+.vscode
+# idx
+.idx
+# node
+node_modules
+#env
+.env
+.env.test
+# prisma
+generated/

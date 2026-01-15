@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    networks:
+      - my-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+    # command: postgres -c listen_addresses='*'
+
+  api:
+    build: .
+    image: my-api:1.0
+    container_name: my_api
+    ports:
+      - 3000:3000
+    networks:
+      - my-network
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+
+networks:
+  my-network:
+
+# volumes:
+#   postgres_data:

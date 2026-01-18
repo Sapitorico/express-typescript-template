@@ -13,19 +13,40 @@ export class UserUseCases implements IUserUseCases {
   registerUser = async (email: string, password: string): Promise<{ user: IPublicUserData, token: string }> => {
     const passwordHash = await this.passwordEncryptionService.hashPassword(password)
     const user = await this.userRepository.saveUser(email, passwordHash)
-    const token = await this.jwtService.generateToken({ ...user.toPublicDTO() })
-    return { user: user.toPublicDTO(), token }
+    const token = await this.jwtService.generateToken({ id: user.idValue, email: user.emailValue })
+    return {
+      user: {
+        id: user.idValue,
+        email: user.emailValue,
+        createdAt: user.createdAtValue,
+        updatedAt: user.updatedAtValue
+      },
+      token
+    }
   }
 
   loginUser = async (email: string, password: string): Promise<{ user: IPublicUserData, token: string }> => {
     const user = await this.userRepository.getUserByEmail(email)
     await this.passwordEncryptionService.comparePassword(password, user.passwordValue)
-    const token = await this.jwtService.generateToken({ ...user.toPublicDTO() })
-    return { user: user.toPublicDTO(), token }
+    const token = await this.jwtService.generateToken({ id: user.idValue, email: user.emailValue })
+    return {
+      user: {
+        id: user.idValue,
+        email: user.emailValue,
+        createdAt: user.createdAtValue,
+        updatedAt: user.updatedAtValue
+      },
+      token
+    }
   }
 
   getUserProfile = async (id: string): Promise<IPublicUserData> => {
     const user = await this.userRepository.getUserById(id)
-    return user.toPublicDTO()
+    return {
+      id: user.idValue,
+      email: user.emailValue,
+      createdAt: user.createdAtValue,
+      updatedAt: user.updatedAtValue
+    }
   }
 }

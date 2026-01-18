@@ -9,10 +9,10 @@ export class UserRepository implements IUserRepository {
   constructor (private readonly dbClient: PrismaClient) {}
 
   saveUser = async (email: string, password: string): Promise<User> => {
-    const newUser = User.create(email, password)
+    const newUser = User.create({ email, password })
 
     const createUser = this.dbClient.user.create({
-      data: newUser.toPrivateDTO()
+      data: newUser.toObject()
     })
 
     const [createdUser, error] = await catchErrorAsync(createUser)

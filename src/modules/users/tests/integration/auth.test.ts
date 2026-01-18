@@ -68,7 +68,7 @@ describe('AUTH', () => {
       // WHEN
       const { status, body } = await request(app).post(REGISTER_URL).send(mock)
       // THEN
-      expect(status).toBe(400)
+      expect(status).toBe(409)
       expect(body).toEqual(mockResult)
       const user = await prisma.user.findUnique({ where: { email: mock.email } })
       expect(user).not.toBeNull()

@@ -7,11 +7,11 @@ export class UserEmail {
   }
 
   private readonly validateValue = (): void => {
-    if (this.value === null || this.value === undefined || this.value.trim() === '') {
+    if (this.value === null || this.value === undefined) {
       throw new Error('Email is not defined')
     }
     if (typeof this.value !== 'string') {
-      throw new Error('value must be a string')
+      throw new Error('Email must be a string')
     }
   }
 

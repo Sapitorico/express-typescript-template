@@ -7,7 +7,7 @@ export class UserPassword {
   }
 
   private readonly validateValue = (): void => {
-    if (this.value === null || this.value === undefined || this.value.trim() === '') {
+    if (this.value === null || this.value === undefined) {
       throw new Error('Password is not defined')
     }
     if (typeof this.value !== 'string') {

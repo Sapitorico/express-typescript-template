@@ -8,11 +8,8 @@ export class JwtService implements IJWTService {
   private readonly algorithm: Algorithm = 'HS256'
   private readonly expiresIn: SignOptions['expiresIn'] = '7d'
 
-  generateToken = async ({ id, email }: Pick<Required<IUserData>, 'id' | 'email'>): Promise<string> => {
-    const payload: JwtPayload = {
-      id,
-      email
-    }
+  generateToken = async (userData: Pick<IUserData, 'id' | 'email'>): Promise<string> => {
+    const payload: JwtPayload = userData
 
     const promise = new Promise<string>((resolve, reject) => {
       sign(payload, this.jwtSecret, { algorithm: this.algorithm, expiresIn: this.expiresIn },

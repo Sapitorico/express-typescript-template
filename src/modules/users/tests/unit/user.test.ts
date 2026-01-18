@@ -21,7 +21,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const { id, ...rest } = mock
       // WHEN
-      const user = new User(rest)
+      const user = User.create(rest)
       // THEN
       expect(user.toObject()).toHaveProperty('id')
     })
@@ -30,7 +30,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const { createdAt, updatedAt, ...rest } = mock
       // WHEN
-      const user = new User(rest)
+      const user = User.create(rest)
       // THEN
       const userData = user.toObject()
       expect(userData).toHaveProperty('createdAt')
@@ -40,12 +40,11 @@ describe('User (Domain) ', () => {
 
   describe('Email validation', () => {
     it.each([
-      { email: '' },
       { email: null },
       { email: undefined }
-    ])('should validate email is required when email is $email', ({ email }) => {
+    ])('should validate email is not defined when email is $email', ({ email }) => {
       // GIVEN
-      const mockResult = 'Email is required'
+      const mockResult = 'Email is not defined'
       // WHEN
       const createUser = (): User => new User({ email, password: '12345678' } as any)
       // THEN
@@ -65,7 +64,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const mockResult = 'Invalid email format'
       // WHEN
-      const createUser = (): User => new User({ email: 'invalid-email', password: '12345678' })
+      const createUser = (): User => User.create({ email: 'invalid-email', password: '12345678' })
       // THEN
       expect(createUser).toThrow(mockResult)
     })
@@ -73,14 +72,13 @@ describe('User (Domain) ', () => {
 
   describe('Password Validation', () => {
     it.each([
-      { password: '' },
       { password: null },
       { password: undefined }
-    ])('should validate password is required when password is $password', ({ password }) => {
+    ])('should validate password is not defined when password is $password', ({ password }) => {
       // GIVEN
-      const mockResult = 'Password is required'
+      const mockResult = 'Password is not defined'
       // WHEN
-      const createUser = (): User => new User({ email: mock.email, password } as any)
+      const createUser = (): User => User.create({ email: mock.email, password } as any)
       // THEN
       expect(createUser).toThrow(mockResult)
     })
@@ -89,7 +87,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const mockResult = 'Password must be a string'
       // WHEN
-      const createUser = (): User => new User({ email: mock.email, password: 123 } as any)
+      const createUser = (): User => User.create({ email: mock.email, password: 123 } as any)
       // THEN
       expect(createUser).toThrow(mockResult)
     })
@@ -98,7 +96,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const mockResult = 'Password must be at most 64 characters long'
       // WHEN
-      const createUser = (): User => new User({ email: mock.email, password: 'a'.repeat(65) })
+      const createUser = (): User => User.create({ email: mock.email, password: 'a'.repeat(65) })
       // THEN
       expect(createUser).toThrow(mockResult)
     })
@@ -107,7 +105,7 @@ describe('User (Domain) ', () => {
       // GIVEN
       const mockResult = 'Password must be at least 8 characters long'
       // WHEN
-      const createUser = (): User => new User({ email: mock.email, password: '1234' })
+      const createUser = (): User => User.create({ email: mock.email, password: '1234' })
       // THEN
       expect(createUser).toThrow(mockResult)
     })

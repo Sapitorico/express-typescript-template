@@ -26,7 +26,23 @@ export class User {
     this.updatedAt = data.updatedAt
   }
 
-  static create (email: string, password: string): User {
+  get idValue (): string {
+    return this.id.value
+  }
+
+  get emailValue (): string {
+    return this.email.value
+  }
+
+  get createdAtValue (): Date {
+    return this.createdAt
+  }
+
+  get updatedAtValue (): Date {
+    return this.updatedAt
+  }
+
+  static create ({ email, password }: Pick<IUserData, 'email' | 'password'>): User {
     return new User({
       id: uuid(),
       email,
@@ -40,32 +56,11 @@ export class User {
     return this.password.value
   }
 
-  /**
-   * Returns all user data including sensitive information.
-   * Use this method only when all data is required (e.g., for persistence operations).
-   *
-   * @returns Complete user data including sensitive fields
-   */
-  toPrivateDTO (): IUserData {
+  toObject (): IUserData {
     return {
       id: this.id.value,
       email: this.email.value,
       password: this.password.value,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt
-    }
-  }
-
-  /**
-   * Returns user data without sensitive information.
-   * Use this method when exposing user data to external systems.
-   *
-   * @returns User data excluding sensitive fields
-   */
-  toPublicDTO (): Omit<IUserData, 'password'> {
-    return {
-      id: this.id.value,
-      email: this.email.value,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }

@@ -1,4 +1,4 @@
 export interface IPasswordEncryptionService {
   hashPassword: (password: string) => Promise<string>
-  comparePassword: (plainPassword: string, encryptedPassword: string) => Promise<boolean>
+  comparePassword: (plainPassword: string, encryptedPassword: string) => Promise<void>
 }
